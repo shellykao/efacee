@@ -1,7 +1,6 @@
 var express = require('express'); //require為使用那些模組
 var mongodb = require('mongodb'); //使用模組mongodb
 var app = express(); //建立express實體，將express初始化，去NEW一個express，變數app才是重點。
-
 var assert = require('assert');
 var myParser = require('body-parser');
 var accept_ac,accept_pwd,accept_Email;
@@ -14,12 +13,9 @@ var myDB; //建立一個全域變數myDB
 app.set('port', (process.env.PORT || 5000));
 
 //提高上傳限制
-//app.use(myParser({limit: '50mb'}));
+app.use(myParser({limit: '50mb'}));
 
-//var urlencodedParser = myParser.urlencoded({extended : false});
-//app.use(myParser.json())
-
-
+app.use(myParser.urlencoded({extended : true}));
 
 //登入
 app.post('/login',function(request, response){
