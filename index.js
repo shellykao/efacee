@@ -3,8 +3,8 @@ var mongodb = require('mongodb'); //使用模組mongodb
 var app = express(); //建立express實體，將express初始化，去NEW一個express，變數app才是重點。
 
 var assert = require('assert');
-//var myParser = require('body-parser');
-
+var myParser = require('body-parser');
+var Parse=require('node-parse-api').Parse;
 var accept_ac,accept_pwd,accept_Email;
 var nodemailer = require('nodemailer');
 var rand;
