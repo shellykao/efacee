@@ -111,8 +111,8 @@ app.post('/send',function(req,res){
 	mailOptions={
 		from: '"e-face" <shelly011793@gmail.com>', 
 		to : accept_Email,
-		subject : "請認證您的信箱",
-		html : "<br> 請點擊連結以認證信箱！<br><a href="+link+">前去認證</a>"	
+		subject : "verify your e-mail",
+		html : "<br> please click the button to verify e-mail！<br><a href="+link+">to verify</a>"	
 	}
 	console.log(mailOptions);
 	//發送郵件
@@ -139,7 +139,7 @@ app.get('/verify',function(req,res){
 		{
 			console.log("email is verified");
 			//show出網頁的內容
-			res.end("<h1> "+mailOptions.to+" 已成功認證囉！<br>現在您可以開始享受您最輕鬆上手的APP-eface");
+			res.end("<h1> "+mailOptions.to+" verify successfully！<br>now you can enjoy this APP-eface");
 			var collection = myDB.collection('user_account');
 			//更改資料表中對應rand之帳號的checkEmail
 			collection.update({randNumber:rand}, {$set: {checkEmail:"OK"}});
