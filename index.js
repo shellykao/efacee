@@ -160,7 +160,7 @@ app.get('/verify',function(req,res){
 
 app.post('/clothes', function(request, response){
 	var collection = myDB.collection('clothes');
-	cursor = collection.find({},{_id:true,user:true,price:true,S:true,M:true,L:true,image:true,image2:true})
+	cursor = collection.find({},{_id:true,user:true,price:true,image:true})
 							.sort({"rate_avg":-1})
 							.skip(parseInt(request.body.SkipCount)*10)
 							.limit(10);
