@@ -156,9 +156,21 @@ app.get('/verify',function(req,res){
 	}
 });
 
+app.post('/clothes/detail', function(request, response){
+	var id=mongodb.ObjectID(request.body.id);
+	var collection = myDB.collection('clothes');
+	collection.findOne({'_id': id},function(err, docs) {
+		if (err) {
+			response.status(406).end();
+		} else {
+			response.type('application/json');
+			response.status(200).send(docs);
+			response.end();
+		}
+	});
+});
 
-
-app.post('/clothes', function(request, response){
+app.post('/clothes/simple', function(request, response){
 	var collection = myDB.collection('clothes');
 	cursor = collection.find({},{_id:true,user:true,price:true,image:true})
 							.sort({"rate_avg":-1})
