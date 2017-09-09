@@ -156,6 +156,27 @@ app.get('/verify',function(req,res){
 	}
 });
 
+
+
+app.post('/clothes', function(request, response){
+	var collection = myDB.collection('clothes');
+	cursor = collection.find({},{_id:true,user:true,price:true,S:true,M:true,L:true,image:true,image2:true})
+							.sort({"rate_avg":-1})
+							.skip(parseInt(request.body.SkipCount)*10)
+							.limit(10);
+	cursor.toArray(function(err, docs) {
+		if (err) {			
+			console.log(err);
+			response.status(406).end();
+		} else {	
+			response.type('application/json');
+			response.status(200).send(docs);
+			response.end();
+		}
+	});	
+});
+
+
 mongodb.MongoClient.connect(mongodbURL, function(err, db){ //使用mongodb.MongoClient的方法connect()進行連線
 	if(err){                                               //事件監聽器用在非同步程式碼，不確定何時會用到
 		console.log(err);                                  //若回傳的參數有error，用console.log()印出錯誤內容
