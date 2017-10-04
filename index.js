@@ -10,6 +10,7 @@ var mailOptions;
 var mongodbURL =
 'mongodb://ABCDEF:a103221070@ds013232.mlab.com:13232/abcd'; //將MongoDB的位置在Server程式碼中以一個變數儲存
 var myDB; //建立一個全域變數myDB
+var nfc_text,nfc_user,nfc_price,nfc_s,nfc_m,nfc_l
 app.set('port', (process.env.PORT || 5000));
 
 //提高上傳限制
@@ -63,28 +64,32 @@ app.post('/nfc',function(request, response){
 		}
 	});
 });
-
-app.post('/buyhistory', function(request, response){
- accept_history = request.body.Ｕser;
+app.post('/nfc',function(request, response){
+ nfc_text = request.body.Number;
+ nfc_user = request.body.User;
+ nfc_price = request.body.Price;
+ nfc_s = request.body.Ss;
+ nfc_m = request.body.Ms;
+ nfc_l = request.body.Ls;
+    console.log(nfc_text);
  
-    console.log(accept_history);
-
- var collection = myDB.collection('buy_history');
- collection.find({"user":accept_history}).toArray(function(err, docs) {
+ var collection = myDB.collection('clothes');
+ 
+ collection.find({"number":nfc_text,"user":nfc_user,"price":nfc_price,"S":nfc_s,"M":nfc_m,"L":nfc_l}).toArray(function(err, docs) {
   if (err) {
    response.status(406).end();
   } else {
+   
    response.type('application/json');
    response.status(200).send(docs);
    response.end();
-
-   if(JSON.stringify(docs)=="[]"){
-    insertDocuments(myDB, function() {
-    });
-   }
-   else{
-   }
-   
+  
+   nfc_text = null;
+   nfc_user = null;
+   nfc_price = null;
+   nfc_s = null;
+   nfc_m = null;
+   nfc_l = null;
   }
  });
 });
