@@ -127,6 +127,46 @@ app.post('/register', function(request, response){
 	});
 });
 
+//購買紀錄
+app.post('/buyhistory', function(request, response){
+
+ accept_history = request.body.Ｕser;
+ 
+    console.log(accept_history);
+
+ 
+ var collection = myDB.collection('buy_history');
+ 
+ collection.find({"user":accept_history}).toArray(function(err, docs) {
+  if (err) {
+   response.status(406).end();
+  } else {
+   response.type('application/json');
+   response.status(200).send(docs);
+   response.end();
+
+   if(JSON.stringify(docs)=="[]"){
+    insertDocument(myDB, function() {
+    });
+   }
+   else{
+   }
+   
+  }
+ });
+});
+
+
+var insertDocument = function(myDB){
+ var collection = myDB.collection('buy_history');
+ collection.insertMany([{user : accept_history}], function(err, result) {
+ assert.equal(err, null);
+ assert.equal(1, result.result.n);
+ assert.equal(1, result.ops.length);
+ });
+
+}
+
 
 //插入使用者資料
 var insertDocuments = function(myDB){
