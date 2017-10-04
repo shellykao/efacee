@@ -2,7 +2,7 @@ var express = require('express'); //require為使用那些模組
 var mongodb = require('mongodb'); //使用模組mongodb
 var app = express(); //建立express實體，將express初始化，去NEW一個express，變數app才是重點。
 var assert = require('assert');
-var myParser = require('body-parser');//這是新加的
+var myParser = require('body-parser');
 var accept_ac,accept_pwd,accept_Email;
 var nodemailer = require('nodemailer');
 var rand;
@@ -176,6 +176,9 @@ app.get('/verify',function(req,res){
 		res.end("<h1>Request is from unknown source");
 	}
 });
+
+
+
 
 mongodb.MongoClient.connect(mongodbURL, function(err, db){ //使用mongodb.MongoClient的方法connect()進行連線
 	if(err){                                               //事件監聽器用在非同步程式碼，不確定何時會用到
