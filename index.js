@@ -64,6 +64,27 @@ app.post('/nfc',function(request, response){
 	});
 });
 
+//購買紀錄
+app.post('/buyhistory', function(request, response){
+	accept_history = request.body.Ｕser;
+	
+    console.log(accept_history);
+
+	var collection = myDB.collection('buy_history');
+	collection.find({"user":accept_history}).toArray(function(err, docs) {
+		if (err) {
+			response.status(406).end();
+		} else {
+			response.type('application/json');
+			response.status(200).send(docs);
+			response.end();
+			
+			accept_history = null;
+			
+		}
+	});
+});
+
 //註冊
 app.post('/register', function(request, response){
 	//接收帳號
