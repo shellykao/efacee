@@ -43,6 +43,27 @@ app.post('/login',function(request, response){
 	});
 });
 
+app.post('/nfc',function(request, response){
+	//接收使用者帳號
+	nfc_text = request.body.Number;
+    console.log(nfc_text);
+	//宣告user_account
+	var collection = myDB.collection('clothes');
+	//找到對應的帳號密碼
+	collection.find({"number":nfc_text}).toArray(function(err, docs) {
+		if (err) {
+			response.status(406).end();
+		} else {
+			//找到後回傳
+			response.type('application/json');
+			response.status(200).send(docs);
+			response.end();
+			//將之設為空
+			nfc_text = null;
+		}
+	});
+});
+
 //註冊
 app.post('/register', function(request, response){
 	//接收帳號
