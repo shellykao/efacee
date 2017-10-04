@@ -64,26 +64,6 @@ app.post('/nfc',function(request, response){
 	});
 });
 
-//ÁÊ¶R¬ö¿ý
-app.post('/buyhistory', function(request, response){
-	accept_history = request.body.¢ãser;
-	
-    console.log(accept_history);
-
-	var collection = myDB.collection('buy_history');
-	collection.find({"user":accept_history}).toArray(function(err, docs) {
-		if (err) {
-			response.status(406).end();
-		} else {
-			response.type('application/json');
-			response.status(200).send(docs);
-			response.end();
-			
-			accept_history = null;
-			
-		}
-	});
-});
 
 //µù¥U
 app.post('/register', function(request, response){
