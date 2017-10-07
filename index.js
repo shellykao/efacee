@@ -49,7 +49,7 @@ app.post('/nfc',function(request, response){
 	nfc_text = request.body.Number;
     console.log(nfc_text);
 	//宣告user_account
-	var collection = myDB.collection('clothes');
+	var collection = myDB.collection('clothes','coat');
 	//找到對應的帳號密碼
 	collection.find({"number":nfc_text}).toArray(function(err, docs) {
 		if (err) {
