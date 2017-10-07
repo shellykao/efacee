@@ -74,8 +74,27 @@ app.post('/nfc',function(request, response){
     console.log(nfc_text);
  
  var collection = myDB.collection('clothes');
+ var collection2 = myDB.collection('coat');
  
  collection.find({"number":nfc_text,"user":nfc_user,"price":nfc_price,"S":nfc_s,"M":nfc_m,"L":nfc_l}).toArray(function(err, docs) {
+  if (err) {
+   response.status(406).end();
+  } else {
+   
+   response.type('application/json');
+   response.status(200).send(docs);
+   response.end();
+  
+   nfc_text = null;
+   nfc_user = null;
+   nfc_price = null;
+   nfc_s = null;
+   nfc_m = null;
+   nfc_l = null;
+  }
+ });
+ 
+  collection2.find({"number":nfc_text,"user":nfc_user,"price":nfc_price,"S":nfc_s,"M":nfc_m,"L":nfc_l}).toArray(function(err, docs) {
   if (err) {
    response.status(406).end();
   } else {
