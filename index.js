@@ -53,7 +53,7 @@ app.post('/nfc',function(request, response){
  nfc_l = request.body.Ls;
     console.log(nfc_text);
  
- var collection = myDB.collection('product');
+ var collection = myDB.collection('clothes');
  
  collection.find({"number":nfc_text,"user":nfc_user,"price":nfc_price,"S":nfc_s,"M":nfc_m,"L":nfc_l}).toArray(function(err, docs) {
   if (err) {
