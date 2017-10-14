@@ -45,13 +45,13 @@ app.post('/login',function(request, response){
 });
 
 app.post('/nfc',function(request, response){
- nfc_text = request.body.Number;
+ nfc_text = request.body.Text;
  nfc_user = request.body.User;
  nfc_price = request.body.Price;
  nfc_s = request.body.Ss;
  nfc_m = request.body.Ms;
  nfc_l = request.body.Ls;
-    console.log(nfc_text);
+console.log(nfc_text);
  
  var collection = myDB.collection('clothes');
  
