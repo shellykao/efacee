@@ -10,7 +10,7 @@ var mailOptions;
 var mongodbURL =
 'mongodb://ABCDEF:a103221070@ds013232.mlab.com:13232/abcd'; //將MongoDB的位置在Server程式碼中以一個變數儲存
 var myDB; //建立一個全域變數myDB
-var nfc_text,nfc_user,nfc_price,nfc_s,nfc_m,nfc_l
+var nfc_no,nfc_user,nfc_price,nfc_s,nfc_m,nfc_l;
 app.set('port', (process.env.PORT || 5000));
 
 //提高上傳限制
@@ -45,63 +45,43 @@ app.post('/login',function(request, response){
 });
 
 app.post('/nfc',function(request, response){
- nfc_text = request.body.Text;
- nfc_user = request.body.User;
- nfc_price = request.body.Price;
- nfc_s = request.body.Ss;
- nfc_m = request.body.Ms;
- nfc_l = request.body.Ls;
-console.log(nfc_text);
- 
- var collection = myDB.collection('clothes');
- 
- collection.find({"number":nfc_text,"user":nfc_user,"price":nfc_price,"S":nfc_s,"M":nfc_m,"L":nfc_l}).toArray(function(err, docs) {
-  if (err) {
-   response.status(406).end();
-  } else {
-   
-   response.type('application/json');
-   response.status(200).send(docs);
-   response.end();
-  
-   nfc_text = null;
-   nfc_user = null;
-   nfc_price = null;
-   nfc_s = null;
-   nfc_m = null;
-   nfc_l = null;
-  }
- });
- 
-});
+	
+	nfc_no = request.body.Number;
+	nfc_user=request.body.User;
+	nfc_price=request.body.Price;
+	nfc_s=request.body.Ss;
+	nfc_m=request.body.Ms;
+	nfc_l=request.body.Ls;
 
-//購買紀錄
-app.post('/buyhistory', function(request, response){
- 
- accept_history = request.body.User;
- 
-    console.log(accept_history);
+    console.log(nfc_no);
+	console.log(nfc_user);
+	console.log(nfc_price);
+	console.log(nfc_s);
+	console.log(nfc_m);
+	console.log(nfc_l);
 
 
- var collection = myDB.collection('buy_history');
- 
- collection.find({"user":accept_history}).toArray(function(err, docs) {
-  if (err) {
-   response.status(406).end();
-  } else {
-   response.type('application/json');
-   response.status(200).send(docs);
-   response.end();
+	
+	var collection = myDB.collection('clothes');
+	
+	collection.find({"number":nfc_no,"user":nfc_user,"price":nfc_price,"S":nfc_s,"M":nfc_m,"L":nfc_l}).toArray(function(err, docs) {
+		if (err) {
+			response.status(406).end();
+		} else {
+			
+			response.type('application/json');
+			response.status(200).send(docs);
+			response.end();
+			
+			nfc_no = null;
+			nfc_user = null;
+			nfc_price = null;
+			nfc_s = null;
+			nfc_m = null;
+			nfc_l = null;
 
-   if(JSON.stringify(docs)=="[]"){
-    insertDocument(myDB, function() {
-    });
-   }
-   else{
-   }
-   
-  }
- });
+		}
+	});
 });
 var insertDocument = function(myDB){
  var collection = myDB.collection('buy_history');
