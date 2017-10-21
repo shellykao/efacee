@@ -83,15 +83,9 @@ app.post('/nfc',function(request, response){
 		}
 	});
 });
-var insertDocument = function(myDB){
- var collection = myDB.collection('buy_history');
- collection.insertMany([{user : accept_history}], function(err, result) {
- assert.equal(err, null);
- assert.equal(1, result.result.n);
- assert.equal(1, result.ops.length);
- });
 
-}
+
+
 
 //µù¥U
 app.post('/register', function(request, response){
