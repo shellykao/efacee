@@ -83,8 +83,6 @@ app.post('/nfc',function(request, response){
 		}
 	});
 });
-
-
 //購買紀錄
 app.post('/buyhistory', function(request, response){
 
@@ -118,11 +116,18 @@ app.post('/buyhistory', function(request, response){
     });
    }
    else{
-    response.type('application/json');
-    response.status(200).send(docs);
-    response.end();
-   }
-   
+    updateDocument(myDB, user, buyList,function(err, result){
+      if (err) {
+      response.type('application/json');
+      response.status(500).send(err);
+      response.end();
+     } else {
+      response.type('application/json');
+      response.status(200).send(result);
+      response.end();
+     }
+    });
+   }   
   }
  });
 });
@@ -138,61 +143,20 @@ var insertDocument = function(myDB, user, list, callback){
   assert.equal(1, result.ops.length);
   callback(err, result);
  });
-
 }
-
-
-
-//註冊
-app.post('/register', function(request, response){
-	//接收帳號
-	accept_ac = request.body.User;
-	//接收密碼
-	accept_pwd = request.body.Password;
-	//接收EMAIL
-	accept_Email = request.body.myEmail;
-    console.log(accept_ac);
-	console.log(accept_pwd);
-	console.log(accept_Email);
-	//宣告user_account
-	var collection = myDB.collection('user_account');
-	//找到對應的user
-	collection.find({"user":accept_ac}).toArray(function(err, docs) {
-		if (err) {
-			response.status(406).end();
-		} else {
-			response.type('application/json');
-			response.status(200).send(docs);
-			response.end();
-			//若找不到代表此帳號無人使用 如此此帳號可使用
-			if(JSON.stringify(docs)=="[]"){
-				insertDocuments(myDB, function() {
-				});
-			}
-			else{
-			}
-		}
-	});
-});
-
-
-//插入使用者資料
-var insertDocuments = function(myDB){
-	var collection = myDB.collection('user_account');
-	collection.insertMany([{user : accept_ac,password : accept_pwd,email : accept_Email,checkEmail:"NO"}], function(err, result) {
-	assert.equal(err, null);
-	assert.equal(1, result.result.n);
-	assert.equal(1, result.ops.length);
-	});
+var updateDocument = function(myDB, user, list, callback){
+ var collection = myDB.collection('buy_history');
+ var item = {
+  history: list
+ }
+ //有誤
+ collection.update(user, item, function(err, result) {
+  assert.equal(err, null);
+  assert.equal(1, result.result.n);
+  assert.equal(1, result.ops.length);
+  callback(err, result);
+ });
 }
-//宣告發信物件
-var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: 'shelly011793@gmail.com',
-        pass: 'nckwknyztrrsuzse'
-    }
-});
 
 
 //送信
