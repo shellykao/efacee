@@ -93,7 +93,8 @@ app.post('/buyhistory', function(request, response){
  var user = "59aa4fe1ed101b00043a6c89";
  var buyList = request.body.Buy;
  
-    console.log(accept_history);
+    console.log(user);
+    console.log(buyList);
 
 
  var collection = myDB.collection('buy_history');
@@ -111,7 +112,7 @@ app.post('/buyhistory', function(request, response){
       response.end();
      } else {
       response.type('application/json');
-      response.status(200).send(docs);
+      response.status(200).send(result);
       response.end();
      }
     });
