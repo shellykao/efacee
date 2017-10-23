@@ -87,42 +87,58 @@ app.post('/nfc',function(request, response){
 
 //ÁÊ¶R¬ö¿ý
 app.post('/buyhistory', function(request, response){
- 
- accept_history = request.body.Buys;
+
+ //accept_history = request.body.User;
+ //var user = request.body.User;
+ var user = "59aa4fe1ed101b00043a6c89";
+ var buyList = request.body.Buy;
  
     console.log(accept_history);
 
- 
+
  var collection = myDB.collection('buy_history');
- 
- collection.find({"buy":accept_history}).toArray(function(err, docs) {
+
+ collection.find({user:user}).toArray(function(err, docs) {
   if (err) {
    response.status(406).end();
   } else {
-   response.type('application/json');
-   response.status(200).send(docs);
-   response.end();
 
    if(JSON.stringify(docs)=="[]"){
-    insertDocument(myDB, function() {
+    insertDocument(myDB, user, buyList, function(err, result) {
+     if (err) {
+      response.type('application/json');
+      response.status(500).send(err);
+      response.end();
+     } else {
+      response.type('application/json');
+      response.status(200).send(docs);
+      response.end();
+     }
     });
    }
    else{
+    response.type('application/json');
+    response.status(200).send(docs);
+    response.end();
    }
    
   }
  });
 });
-var insertDocument = function(myDB){
+var insertDocument = function(myDB, user, list, callback){
  var collection = myDB.collection('buy_history');
- collection.insertMany([{user : accept_history}], function(err, result) {
- assert.equal(err, null);
- assert.equal(1, result.result.n);
- assert.equal(1, result.ops.length);
+ var item = {
+  user: user,
+  history: list
+ }
+ collection.insert(item, function(err, result) {
+  assert.equal(err, null);
+  assert.equal(1, result.result.n);
+  assert.equal(1, result.ops.length);
+  callback(err, result);
  });
 
 }
-
 
 
 
