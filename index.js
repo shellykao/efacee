@@ -88,7 +88,7 @@ app.post('/nfc',function(request, response){
 //ÁÊ¶R¬ö¿ý
 app.post('/buyhistory', function(request, response){
  
- accept_history = request.body.User;
+ accept_history = request.body.Buys;
  
     console.log(accept_history);
 
