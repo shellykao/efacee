@@ -95,7 +95,7 @@ app.post('/buyhistory', function(request, response){
  
  var collection = myDB.collection('buy_history');
  
- collection.find({"user":accept_history}).toArray(function(err, docs) {
+ collection.find({"buy":accept_history}).toArray(function(err, docs) {
   if (err) {
    response.status(406).end();
   } else {
