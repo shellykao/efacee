@@ -94,7 +94,6 @@ app.post('/buyhistory', function(request, response){
     console.log(user);
     console.log(buyList);
 
-
  var collection = myDB.collection('buy_history');
 
  collection.find({user:user}).toArray(function(err, docs) {
@@ -103,7 +102,7 @@ app.post('/buyhistory', function(request, response){
   } else {
 
    if(JSON.stringify(docs)=="[]"){
-     insertDocument(myDB, user, buyList, function(err, result) {
+    insertDocument(myDB, user, buyList, function(err, result) {
      if (err) {
       response.type('application/json');
       response.status(500).send(err);
@@ -144,19 +143,20 @@ var insertDocument = function(myDB, user, list, callback){
   callback(err, result);
  });
 }
-var updateDocument = function(myDB, list, callback){
+var updateDocument = function(myDB, user, list, callback){
  var collection = myDB.collection('buy_history');
- var item2 = {
-  history2: list
+ var item = {
+  history: list
  }
  //¦³»~
- collection.update(item2, function(err, result) {
+ collection.update(item, function(err, result) {
   assert.equal(err, null);
   assert.equal(1, result.result.n);
   assert.equal(1, result.ops.length);
   callback(err, result);
  });
 }
+
 
 //°e«H
 app.post('/send',function(req,res){
