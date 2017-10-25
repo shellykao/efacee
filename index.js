@@ -83,9 +83,10 @@ app.post('/nfc',function(request, response){
 		}
 	});
 });
+
 //ÁÊ¶R¬ö¿ý
 app.post('/buyhistory', function(request, response){
-
+ 
  //accept_history = request.body.User;
  //var user = request.body.User;
  var user = "59aa4fe1ed101b00043a6c89";
@@ -95,14 +96,14 @@ app.post('/buyhistory', function(request, response){
     console.log(buyList);
 
  var collection = myDB.collection('buy_history');
-
+ 
  collection.find({user:user}).toArray(function(err, docs) {
   if (err) {
    response.status(406).end();
   } else {
 
    if(JSON.stringify(docs)=="[]"){
-    insertDocument(myDB, user, buyList, function(err, result) {
+     insertDocument(myDB, user, buyList, function(err, result) {
      if (err) {
       response.type('application/json');
       response.status(500).send(err);
@@ -115,7 +116,7 @@ app.post('/buyhistory', function(request, response){
     });
    }
    else{
-    updateDocument(myDB, buyList,function(err, result){
+    updateDocument(myDB,user,buyList,function(err, result){
       if (err) {
       response.type('application/json');
       response.status(500).send(err);
@@ -143,7 +144,7 @@ var insertDocument = function(myDB, user, list, callback){
   callback(err, result);
  });
 }
-var updateDocument = function(myDB, user, list, callback){
+var updateDocument = function(myDB, list, callback){
  var collection = myDB.collection('buy_history');
  var item = {
   history: list
