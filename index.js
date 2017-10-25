@@ -85,25 +85,26 @@ app.post('/nfc',function(request, response){
 });
 //ÁÊ¶R¬ö¿ý
 app.post('/buyhistory', function(request, response){
-
+ 
  //accept_history = request.body.User;
  //var user = request.body.User;
  var user = "59aa4fe1ed101b00043a6c89";
  var buyList = request.body.Buy;
  
     console.log(user);
-    console.log(buyList);
+    //console.log(buyList);
 
-
+ 
  var collection = myDB.collection('buy_history');
-
+ 
  collection.find({user:user}).toArray(function(err, docs) {
   if (err) {
    response.status(406).end();
   } else {
 
    if(JSON.stringify(docs)=="[]"){
-    insertDocument(myDB, user, buyList, function(err, result) {
+    // insertDocument(myDB, user, buyList, function(err, result) {
+     insertDocument(myDB, user, function(err, result) {
      if (err) {
       response.type('application/json');
       response.status(500).send(err);
@@ -144,13 +145,13 @@ var insertDocument = function(myDB, user, list, callback){
   callback(err, result);
  });
 }
-var updateDocument = function(myDB, user, list, callback){
+var updateDocument = function(myDB, list, callback){
  var collection = myDB.collection('buy_history');
- var item = {
-  history: list
+ var item2 = {
+  history2: list
  }
  //¦³»~
- collection.update(item, function(err, result) {
+ collection.update(item2, function(err, result) {
   assert.equal(err, null);
   assert.equal(1, result.result.n);
   assert.equal(1, result.ops.length);
