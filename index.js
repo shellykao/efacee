@@ -116,7 +116,7 @@ app.post('/buyhistory', function(request, response){
     });
    }
    else{
-    updateDocument(myDB, user, buyList,function(err, result){
+    updateDocument(myDB, buyList,function(err, result){
       if (err) {
       response.type('application/json');
       response.status(500).send(err);
@@ -150,14 +150,13 @@ var updateDocument = function(myDB, user, list, callback){
   history: list
  }
  //¦³»~
- collection.update(user, item, function(err, result) {
+ collection.update(item, function(err, result) {
   assert.equal(err, null);
   assert.equal(1, result.result.n);
   assert.equal(1, result.ops.length);
   callback(err, result);
  });
 }
-
 
 //°e«H
 app.post('/send',function(req,res){
