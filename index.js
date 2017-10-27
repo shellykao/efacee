@@ -95,6 +95,7 @@ app.post('/buyhistory', function(request, response){
     console.log(user);
     console.log(buyList);
 
+ 
  var collection = myDB.collection('buy_history');
  
  collection.find({user:user}).toArray(function(err, docs) {
@@ -115,8 +116,9 @@ app.post('/buyhistory', function(request, response){
      }
     });
    }
+   //原本應該是updata
    else{
-    updateDocument(myDB,user,buyList,function(err, result){
+    insertDocument(myDB,user,buyList,function(err, result){
       if (err) {
       response.type('application/json');
       response.status(500).send(err);
@@ -144,21 +146,19 @@ var insertDocument = function(myDB, user, list, callback){
   callback(err, result);
  });
 }
-var updateDocument = function(myDB, list, callback){
- var collection = myDB.collection('buy_history');
- var item = {
-  history: list
- }
- //有誤
- collection.update(item, function(err, result) {
-  assert.equal(err, null);
-  assert.equal(1, result.result.n);
-  assert.equal(1, result.ops.length);
-  callback(err, result);
- });
-}
-
-
+// var updateDocument = function(myDB, list, callback){
+//  var collection = myDB.collection('buy_history');
+//  var item2 = {
+//   history2: list
+//  }
+//  //有誤
+//  collection.update(item2, function(err, result) {
+//   assert.equal(err, null);
+//   assert.equal(1, result.result.n);
+//   assert.equal(1, result.ops.length);
+//   callback(err, result);
+//  });
+// }
 //送信
 app.post('/send',function(req,res){
 	//宣告一個亂數
