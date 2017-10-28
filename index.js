@@ -87,7 +87,8 @@ app.post('/nfc',function(request, response){
 //抓先前購買紀錄
 app.post('/history',function(request, response){
  
-    var user = "59aa4fe1ed101b00043a6c89";
+    user=request.body.User;
+
  console.log(user);
  
  var collection = myDB.collection('buy_history');
@@ -107,7 +108,6 @@ app.post('/history',function(request, response){
   }
  });
 });
-
 
 //購買紀錄
 app.post('/buyhistory', function(request, response){
