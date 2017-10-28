@@ -146,18 +146,6 @@ app.post('/buyhistory', function(request, response){
    else{
     collection.find({user:user},function(error,diagram){
      diagram.remove();
-	  insertDocument(myDB, user, buyList, function(err, result) {
-     if (err) {
-      response.type('application/json');
-      response.status(500).send(err);
-      response.end();
-     } else {
-      response.type('application/json');
-      response.status(200).send(result);
-      response.end();
-     }
-    });
-	 
     }
   
      )
