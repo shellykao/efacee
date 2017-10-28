@@ -87,7 +87,8 @@ app.post('/nfc',function(request, response){
 //§ì¥ý«eÁÊ¶R¬ö¿ý
 app.post('/history',function(request, response){
  
-    user=request.body.User;
+    
+    var user = "59aa4fe1ed101b00043a6c89";
 
  console.log(user);
  
