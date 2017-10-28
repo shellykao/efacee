@@ -84,6 +84,31 @@ app.post('/nfc',function(request, response){
 	});
 });
 
+//抓先前購買紀錄
+app.post('/history',function(request, response){
+ 
+    var user = "59aa4fe1ed101b00043a6c89";
+ console.log(user);
+ 
+ var collection = myDB.collection('buy_history');
+ 
+ collection.find({user:user}).toArray(function(err, docs) {
+  if (err) {
+   response.status(406).end();
+  } else {
+   
+   response.type('application/json');
+   response.status(200).send(docs);
+   response.end();
+   
+   user = null;
+   
+
+  }
+ });
+});
+
+
 //購買紀錄
 app.post('/buyhistory', function(request, response){
  
@@ -146,19 +171,7 @@ var insertDocument = function(myDB, user, list, callback){
   callback(err, result);
  });
 }
-// var updateDocument = function(myDB, list, callback){
-//  var collection = myDB.collection('buy_history');
-//  var item2 = {
-//   history2: list
-//  }
-//  //有誤
-//  collection.update(item2, function(err, result) {
-//   assert.equal(err, null);
-//   assert.equal(1, result.result.n);
-//   assert.equal(1, result.ops.length);
-//   callback(err, result);
-//  });
-// }
+
 //送信
 app.post('/send',function(req,res){
 	//宣告一個亂數
