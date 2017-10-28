@@ -84,6 +84,7 @@ app.post('/nfc',function(request, response){
 	});
 });
 
+
 //抓先前購買紀錄
 app.post('/history',function(request, response){
  
@@ -109,6 +110,7 @@ app.post('/history',function(request, response){
   }
  });
 });
+
 
 //購買紀錄
 app.post('/buyhistory', function(request, response){
@@ -145,10 +147,10 @@ app.post('/buyhistory', function(request, response){
    //原本應該是updata
    else{
     collection.find({user:user},function(error,diagram){
-     diagram.remove();
-    }
+    diagram.remove();
   
-     )
+    }   
+    )
    }   
   }
  });
@@ -175,6 +177,7 @@ var Diagram = {
     }
 }
 module.exports = Diagram;
+
 
 //送信
 app.post('/send',function(req,res){
