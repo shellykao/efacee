@@ -146,11 +146,8 @@ app.post('/buyhistory', function(request, response){
    }
    //原本應該是updata
    else{
-    collection.find({user:user},function(error,diagram){
-    diagram.remove();
-  
-    }   
-    )
+     
+    
    }   
   }
  });
@@ -168,16 +165,6 @@ var insertDocument = function(myDB, user, list, callback){
   callback(err, result);
  });
 }
-var Diagram = {
-    remove: function(user, res) {
-        console.log('deletecontroller', user);
-        diagram.remove({
-            user: user
-        });
-    }
-}
-module.exports = Diagram;
-
 
 //送信
 app.post('/send',function(req,res){
