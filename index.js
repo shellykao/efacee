@@ -44,6 +44,38 @@ app.post('/login',function(request, response){
 	});
 });
 
+//註冊
+app.post('/register', function(request, response){
+	//接收帳號
+	accept_ac = request.body.User;
+	//接收密碼
+	accept_pwd = request.body.Password;
+	//接收EMAIL
+	accept_Email = request.body.myEmail;
+    console.log(accept_ac);
+	console.log(accept_pwd);
+	console.log(accept_Email);
+	//宣告user_account
+	var collection = myDB.collection('user_account');
+	//找到對應的user
+	collection.find({"user":accept_ac}).toArray(function(err, docs) {
+		if (err) {
+			response.status(406).end();
+		} else {
+			response.type('application/json');
+			response.status(200).send(docs);
+			response.end();
+			//若找不到代表此帳號無人使用 如此此帳號可使用
+			if(JSON.stringify(docs)=="[]"){
+				insertDocuments(myDB, function() {
+				});
+			}
+			else{
+			}
+		}
+	});
+});
+
 app.post('/nfc',function(request, response){
 	
 	nfc_no = request.body.Number;
