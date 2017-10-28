@@ -2,7 +2,7 @@ var express = require('express'); //require¬°¨Ï¥Î¨º¨Ç¼Ò²Õ
 var mongodb = require('mongodb'); //¨Ï¥Î¼Ò²Õmongodb
 var app = express(); //«Ø¥ßexpress¹êÅé¡A±Nexpressªì©l¤Æ¡A¥hNEW¤@­Óexpress¡AÅÜ¼Æapp¤~¬O­«ÂI¡C
 var assert = require('assert');
-var myParser = require('body-parser');
+var myParser = require('body-parser');//³o¬O·s¥[ªº
 var accept_ac,accept_pwd,accept_Email;
 var nodemailer = require('nodemailer');
 var rand;
@@ -10,7 +10,6 @@ var mailOptions;
 var mongodbURL =
 'mongodb://ABCDEF:a103221070@ds013232.mlab.com:13232/abcd'; //±NMongoDBªº¦ì¸m¦bServerµ{¦¡½X¤¤¥H¤@­ÓÅÜ¼ÆÀx¦s
 var myDB; //«Ø¥ß¤@­Ó¥þ°ìÅÜ¼ÆmyDB
-var nfc_no,nfc_user,nfc_price,nfc_s,nfc_m,nfc_l;
 app.set('port', (process.env.PORT || 5000));
 
 //´£°ª¤W¶Ç­­¨î
@@ -76,127 +75,25 @@ app.post('/register', function(request, response){
 	});
 });
 
-app.post('/nfc',function(request, response){
-	
-	nfc_no = request.body.Number;
-	nfc_user=request.body.User;
-	nfc_price=request.body.Price;
-	nfc_s=request.body.Ss;
-	nfc_m=request.body.Ms;
-	nfc_l=request.body.Ls;
 
-    console.log(nfc_no);
-	console.log(nfc_user);
-	console.log(nfc_price);
-	console.log(nfc_s);
-	console.log(nfc_m);
-	console.log(nfc_l);
-
-
-	
-	var collection = myDB.collection('product');
-	
-	collection.find({"number":nfc_no}).toArray(function(err, docs) {
-		if (err) {
-			response.status(406).end();
-		} else {
-			
-			response.type('application/json');
-			response.status(200).send(docs);
-			response.end();
-			
-			nfc_no = null;
-			nfc_user = null;
-			nfc_price = null;
-			nfc_s = null;
-			nfc_m = null;
-			nfc_l = null;
-
-		}
+//´¡¤J¨Ï¥ÎªÌ¸ê®Æ
+var insertDocuments = function(myDB){
+	var collection = myDB.collection('user_account');
+	collection.insertMany([{user : accept_ac,password : accept_pwd,email : accept_Email,checkEmail:"NO"}], function(err, result) {
+	assert.equal(err, null);
+	assert.equal(1, result.result.n);
+	assert.equal(1, result.ops.length);
 	});
-});
-
-
-//§ì¥ý«eÁÊ¶R¬ö¿ý
-app.post('/history',function(request, response){
- 
-    
-    var user = "59aa4fe1ed101b00043a6c89";
-
- console.log(user);
- 
- var collection = myDB.collection('buy_history');
- 
- collection.find({user:user}).toArray(function(err, docs) {
-  if (err) {
-   response.status(406).end();
-  } else {
-   
-   response.type('application/json');
-   response.status(200).send(docs);
-   response.end();
-   
-   user = null;
-   
-
-  }
- });
-});
-
-
-//ÁÊ¶R¬ö¿ý
-app.post('/buyhistory', function(request, response){
- 
- //accept_history = request.body.User;
- //var user = request.body.User;
- var user = "59aa4fe1ed101b00043a6c89";
- var buyList = request.body.Buy;
- 
-    console.log(user);
-    console.log(buyList);
-
- 
- var collection = myDB.collection('buy_history');
- 
- collection.find({user:user}).toArray(function(err, docs) {
-  if (err) {
-   response.status(406).end();
-  } else {
-
-   if(JSON.stringify(docs)=="[]"){
-     insertDocument(myDB, user, buyList, function(err, result) {
-     if (err) {
-      response.type('application/json');
-      response.status(500).send(err);
-      response.end();
-     } else {
-      response.type('application/json');
-      response.status(200).send(result);
-      response.end();
-     }
-    });
-   }
-   //­ì¥»À³¸Ó¬Oupdata
-   else{
-     
-    
-   }   
-  }
- });
-});
-var insertDocument = function(myDB, user, list, callback){
- var collection = myDB.collection('buy_history');
- var item = {
-  user: user,
-  history: list
- }
- collection.insert(item, function(err, result) {
-  assert.equal(err, null);
-  assert.equal(1, result.result.n);
-  assert.equal(1, result.ops.length);
-  callback(err, result);
- });
 }
+//«Å§iµo«Hª«¥ó
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'shelly011793@gmail.com',
+        pass: 'nckwknyztrrsuzse'
+    }
+});
+
 
 //°e«H
 app.post('/send',function(req,res){
@@ -259,9 +156,6 @@ app.get('/verify',function(req,res){
 	}
 });
 
-
-
-
 mongodb.MongoClient.connect(mongodbURL, function(err, db){ //¨Ï¥Îmongodb.MongoClientªº¤èªkconnect()¶i¦æ³s½u
 	if(err){                                               //¨Æ¥óºÊÅ¥¾¹¥Î¦b«D¦P¨Bµ{¦¡½X¡A¤£½T©w¦ó®É·|¥Î¨ì
 		console.log(err);                                  //­Y¦^¶Çªº°Ñ¼Æ¦³error¡A¥Îconsole.log()¦L¥X¿ù»~¤º®e
@@ -297,6 +191,9 @@ app.get('/api/test', function(request, response){ //³s±µ¨ì/api/test¤~·|°µªº¨Æ±¡¡
 app.listen(app.get('port'), function() {
 	console.log('Node app is running on port', app.get('port'));
 });
+
+
+
 
 
 
