@@ -84,32 +84,6 @@ app.post('/nfc',function(request, response){
 	});
 });
 
-//抓先前購買紀錄
-app.post('/history',function(request, response){
- 
-    
-    var user = "59aa4fe1ed101b00043a6c89";
-
- console.log(user);
- 
- var collection = myDB.collection('buy_history');
- 
- collection.find({user:user}).toArray(function(err, docs) {
-  if (err) {
-   response.status(406).end();
-  } else {
-   
-   response.type('application/json');
-   response.status(200).send(docs);
-   response.end();
-   
-   user = null;
-   
-
-  }
- });
-});
-
 //購買紀錄
 app.post('/buyhistory', function(request, response){
  
@@ -144,8 +118,10 @@ app.post('/buyhistory', function(request, response){
    }
    //原本應該是updata
    else{
-    insertDocument(myDB,user,buyList,function(err, result){
-      if (err) {
+    collection.find({user:user},function(error,diagram){
+     diagram.remove();
+	  insertDocument(myDB, user, buyList, function(err, result) {
+     if (err) {
       response.type('application/json');
       response.status(500).send(err);
       response.end();
@@ -155,6 +131,10 @@ app.post('/buyhistory', function(request, response){
       response.end();
      }
     });
+	 
+    }
+  
+     )
    }   
   }
  });
@@ -172,6 +152,15 @@ var insertDocument = function(myDB, user, list, callback){
   callback(err, result);
  });
 }
+var Diagram = {
+    remove: function(user, res) {
+        console.log('deletecontroller', user);
+        diagram.remove({
+            user: user
+        });
+    }
+}
+module.exports = Diagram;
 
 //送信
 app.post('/send',function(req,res){
