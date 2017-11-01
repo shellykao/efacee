@@ -116,8 +116,108 @@ app.post('/nfc',function(request, response){
 	});
 });
 
+//抓先前購買紀錄
+app.post('/history',function(request, response){
+ 
+    
+    var user = "59aa4fe1ed101b00043a6c89";
+
+ console.log(user);
+ 
+ var collection = myDB.collection('buy_history');
+ 
+ collection.find({user:user}).toArray(function(err, docs) {
+  if (err) {
+   response.status(406).end();
+  } else {
+   
+   response.type('application/json');
+   response.status(200).send(docs);
+   response.end();
+   
+   user = null;
+   
+
+  }
+ });
+});
 
 
+//購買紀錄
+app.post('/buyhistory', function(request, response){
+ 
+ //accept_history = request.body.User;
+ //var user = request.body.User;
+ var user = "59aa4fe1ed101b00043a6c89";
+ var buyList = request.body.Buy;
+ 
+    console.log(user);
+    console.log(buyList);
+
+ 
+ var collection = myDB.collection('buy_history');
+ 
+ collection.find({user:user}).toArray(function(err, docs) {
+  if (err) {
+   response.status(406).end();
+  } else {
+
+   if(JSON.stringify(docs)=="[]"){
+     insertDocument(myDB, user, buyList, function(err, result) {
+     if (err) {
+      response.type('application/json');
+      response.status(500).send(err);
+      response.end();
+     } else {
+      response.type('application/json');
+      response.status(200).send(result);
+      response.end();
+     }
+    });
+   }
+   //原本應該是updata
+   else{
+    insertDocument(myDB,user,buyList,function(err, result){
+      if (err) {
+      response.type('application/json');
+      response.status(500).send(err);
+      response.end();
+     } else {
+      response.type('application/json');
+      response.status(200).send(result);
+      response.end();
+     }
+    });
+   }   
+  }
+ });
+});
+var insertDocument = function(myDB, user, list, callback){
+ var collection = myDB.collection('buy_history');
+ var item = {
+  user: user,
+  history: list
+ }
+ collection.insert(item, function(err, result) {
+  assert.equal(err, null);
+  assert.equal(1, result.result.n);
+  assert.equal(1, result.ops.length);
+  callback(err, result);
+ });
+}
+// var updateDocument = function(myDB, list, callback){
+//  var collection = myDB.collection('buy_history');
+//  var item2 = {
+//   history2: list
+//  }
+//  //有誤
+//  collection.update(item2, function(err, result) {
+//   assert.equal(err, null);
+//   assert.equal(1, result.result.n);
+//   assert.equal(1, result.ops.length);
+//   callback(err, result);
+//  });
+// }
 //插入使用者資料
 var insertDocuments = function(myDB){
 	var collection = myDB.collection('user_account');
