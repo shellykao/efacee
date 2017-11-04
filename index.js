@@ -147,7 +147,7 @@ app.post('/history',function(request, response){
    console.log(err);
   }else{
    console.log(result);
-            db.close();
+           
   }
  });
 });
