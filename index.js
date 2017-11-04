@@ -152,14 +152,15 @@ app.post('/history',function(request, response){
     if (err){
      console.log(err);
     }else{
-     response.redirect("thelist");
+     response.type('application/json');
+     response.status(200).send(docs);
+     response.end();  
     }
     db.close();
    });
   }
  });
 });
-
 
 //ÁÊ¶R¬ö¿ý
 app.post('/buyhistory', function(request, response){
