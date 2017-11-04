@@ -7,6 +7,8 @@ var accept_ac,accept_pwd,accept_Email;
 var nodemailer = require('nodemailer');
 var rand;
 var mailOptions;
+var productNumber;
+var myproduct;
 var mongodbURL =
 'mongodb://ABCDEF:a103221070@ds013232.mlab.com:13232/abcd'; //將MongoDB的位置在Server程式碼中以一個變數儲存
 var nfc_no,nfc_user,nfc_price,nfc_s,nfc_m,nfc_l;
@@ -118,8 +120,10 @@ app.post('/nfc',function(request, response){
 
 //抓先前購買紀錄
 app.post('/history',function(request, response){
+
  
-    
+    var MongoClient = mongodb.MongoClient;
+
     var user = "59aa4fe1ed101b00043a6c89";
 
  console.log(user);
@@ -133,11 +137,25 @@ app.post('/history',function(request, response){
    
    response.type('application/json');
    response.status(200).send(docs);
-   response.end();
-   
+   response.end();  
    user = null;
    
+  }
+ });
+ MongoClient.connect(mongodbURL,function(err, db){
+  if (err){
+            console.log('Unable to connect to server', err);
+  }else{
+   console.log("Connection Established");
 
+   collection.remove({user:user},function(err,result){
+    if (err){
+     console.log(err);
+    }else{
+     res.redirect("thelist");
+    }
+    db.close();
+   });
   }
  });
 });
@@ -218,6 +236,21 @@ var insertDocument = function(myDB, user, list, callback){
 //   callback(err, result);
 //  });
 // }
+
+app.post('/product/detail', function(request, response){
+ var id=mongodb.ObjectID(request.body.id);
+ var collection = myDB.collection('product');
+ collection.findOne({'_id': id},function(err, docs) {
+  if (err) {
+   response.status(406).end();
+  } else {
+   response.type('application/json');
+   response.status(200).send(docs);
+   response.end();
+  }
+ });
+});
+
 //插入使用者資料
 var insertDocuments = function(myDB){
 	var collection = myDB.collection('user_account');
