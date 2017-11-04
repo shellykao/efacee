@@ -142,22 +142,12 @@ app.post('/history',function(request, response){
    
   }
  });
- MongoClient.connect(mongodbURL,function(err, db){
+ collection.remove({user:user},function(err,result){
   if (err){
-            console.log('Unable to connect to server', err);
+   console.log(err);
   }else{
-   console.log("Connection Established");
-
-   collection.remove({user:user},function(err,result){
-    if (err){
-     console.log(err);
-    }else{
-     response.type('application/json');
-     response.status(200).send(docs);
-     response.end();  
-    }
-    db.close();
-   });
+   console.log(result);
+            db.close();
   }
  });
 });
