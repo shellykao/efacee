@@ -152,7 +152,7 @@ app.post('/history',function(request, response){
     if (err){
      console.log(err);
     }else{
-     res.redirect("thelist");
+     response.redirect("thelist");
     }
     db.close();
    });
