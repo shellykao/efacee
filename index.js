@@ -3,7 +3,7 @@ var mongodb = require('mongodb'); //使用模組mongodb
 var app = express(); //建立express實體，將express初始化，去NEW一個express，變數app才是重點。
 var assert = require('assert');
 var myParser = require('body-parser');//這是新加的
-var accept_ac,accept_pwd,accept_Email;
+var accept_ac,accept_pwd,accept_Email,imgURL;
 var nodemailer = require('nodemailer');
 var rand;
 var mailOptions;
@@ -54,13 +54,17 @@ app.post('/register', function(request, response){
 	accept_pwd = request.body.Password;
 	//接收EMAIL
 	accept_Email = request.body.myEmail;
+	//接收人臉
+	imgURL = request.body.face;
+	
     console.log(accept_ac);
 	console.log(accept_pwd);
 	console.log(accept_Email);
+	console.log(imgURL);
 	//宣告user_account
 	var collection = myDB.collection('user_account');
 	//找到對應的user
-	collection.find({"user":accept_ac}).toArray(function(err, docs) {
+	collection.find({"user":accept_ac,"face":imgURL}).toArray(function(err, docs) {
 		if (err) {
 			response.status(406).end();
 		} else {
@@ -222,7 +226,7 @@ app.post('/product/detail', function(request, response){
 //插入使用者資料
 var insertDocuments = function(myDB){
 	var collection = myDB.collection('user_account');
-	collection.insertMany([{user : accept_ac,password : accept_pwd,email : accept_Email,checkEmail:"NO"}], function(err, result) {
+	collection.insertMany([{user : accept_ac,password : accept_pwd,email : accept_Email,checkEmail:"NO",face : imgURL}], function(err, result) {
 	assert.equal(err, null);
 	assert.equal(1, result.result.n);
 	assert.equal(1, result.ops.length);
