@@ -159,9 +159,12 @@ app.post('/buyhistory', function(request, response){
  //var user = request.body.User;
  var user = "59aa4fe1ed101b00043a6c89";
  var buyList = request.body.Buy;
+ var hisList = request.body.Say;
+
  
     console.log(user);
     console.log(buyList);
+    console.log(hisList)
 
  
  var collection = myDB.collection('buy_history');
@@ -172,7 +175,7 @@ app.post('/buyhistory', function(request, response){
   } else {
 
    if(JSON.stringify(docs)=="[]"){
-     insertDocument(myDB, user, buyList, function(err, result) {
+     insertDocument(myDB, user, buyList,hisList, function(err, result) {
      if (err) {
       response.type('application/json');
       response.status(500).send(err);
@@ -185,9 +188,10 @@ app.post('/buyhistory', function(request, response){
     });
    }
    //原本應該是updata
-   else{
-    insertDocument(myDB,user,buyList,function(err, result){
-      if (err) {
+    else{
+
+     insertDocument(myDB, buyList, function(err, result) {
+     if (err) {
       response.type('application/json');
       response.status(500).send(err);
       response.end();
@@ -196,8 +200,9 @@ app.post('/buyhistory', function(request, response){
       response.status(200).send(result);
       response.end();
      }
-    });
-   }   
+     });
+
+   }
   }
  });
 });
@@ -205,7 +210,7 @@ var insertDocument = function(myDB, user, list, callback){
  var collection = myDB.collection('buy_history');
  var item = {
   user: user,
-  history: list
+  history: list,
  }
  collection.insert(item, function(err, result) {
   assert.equal(err, null);
@@ -214,19 +219,6 @@ var insertDocument = function(myDB, user, list, callback){
   callback(err, result);
  });
 }
-// var updateDocument = function(myDB, list, callback){
-//  var collection = myDB.collection('buy_history');
-//  var item2 = {
-//   history2: list
-//  }
-//  //有誤
-//  collection.update(item2, function(err, result) {
-//   assert.equal(err, null);
-//   assert.equal(1, result.result.n);
-//   assert.equal(1, result.ops.length);
-//   callback(err, result);
-//  });
-// }
 
 app.post('/product/detail', function(request, response){
  var id=mongodb.ObjectID(request.body.id);
