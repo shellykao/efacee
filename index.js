@@ -209,6 +209,24 @@ var insertDocument = function(myDB, user, list, callback){
  });
 }
 
+app.post('/simple', function(request, response){
+	var collection = myDB.collection('coat');
+	cursor = collection.find({},{image:true})
+							.sort({"rate_avg":-1})
+							.skip(parseInt(request.body.SkipCount)*10)
+							.limit(10);
+	cursor.toArray(function(err, docs) {
+		if (err) {			
+			console.log(err);
+			response.status(406).end();
+		} else {	
+			response.type('application/json');
+			response.status(200).send(docs);
+			response.end();
+		}
+	});	
+});
+
 app.post('/product/detail', function(request, response){
  var id=mongodb.ObjectID(request.body.id);
  var collection = myDB.collection('product');
