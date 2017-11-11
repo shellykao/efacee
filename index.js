@@ -212,9 +212,9 @@ var insertDocument = function(myDB, user, list, callback){
 app.post('/simple', function(request, response){
 	var collection = myDB.collection('coat');
 	cursor = collection.find({},{image:true})
-							.sort({"rate_avg":-1})
-							.skip(parseInt(request.body.SkipCount)*10)
-							.limit(10);
+							.sort({"rate_avg":-1})//排順序
+							.skip(parseInt(request.body.SkipCount)*10)//掠過幾筆資料
+							.limit(10);//限制幾筆資料
 	cursor.toArray(function(err, docs) {
 		if (err) {			
 			console.log(err);
