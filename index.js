@@ -226,6 +226,21 @@ app.post('/simple', function(request, response){
 		}
 	});	
 });
+app.post('/homepage', function(request, response){
+	var collection = myDB.collection('product');
+	cursor = collection.find({},{user:true,price:true});
+	cursor.toArray(function(err, docs) {
+		if (err) {			
+			console.log(err);
+			response.status(406).end();
+		} else {	
+			response.type('application/json');
+			response.status(200).send(docs);
+			response.end();
+		}
+	});	
+});
+
 
 app.post('/product/detail', function(request, response){
  var id=mongodb.ObjectID(request.body.id);
