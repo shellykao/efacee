@@ -210,8 +210,8 @@ var insertDocument = function(myDB, user, list, callback){
 }
 
 app.post('/simple', function(request, response){
-	var collection = myDB.collection('coat');
-	cursor = collection.find({},{image:true})
+	var collection = myDB.collection('product');
+	cursor = collection.find({},{image:true,user:true,price:true})
 							.sort({"rate_avg":-1})//排順序
 							.skip(parseInt(request.body.SkipCount)*10)//掠過幾筆資料
 							.limit(10);//限制幾筆資料
