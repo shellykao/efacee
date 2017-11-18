@@ -128,7 +128,7 @@ app.post('/history',function(request, response){
  
     var MongoClient = mongodb.MongoClient;
 
-    var user = "Yu Zheng";
+    var user = "iris";
 
  console.log(user);
  
