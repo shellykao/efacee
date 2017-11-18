@@ -128,7 +128,7 @@ app.post('/history',function(request, response){
  
     var MongoClient = mongodb.MongoClient;
 
-    var user = "59aa4fe1ed101b00043a6c89";
+    var user = "Yu Zheng";
 
  console.log(user);
  
@@ -161,7 +161,7 @@ app.post('/buyhistory', function(request, response){
  
  //accept_history = request.body.User;
  //var user = request.body.User;
- var user = "59aa4fe1ed101b00043a6c89";
+ var user = "Yu Zheng";
  var buyList = request.body.Buy;
  
     console.log(user);
