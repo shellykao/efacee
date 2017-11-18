@@ -161,7 +161,7 @@ app.post('/buyhistory', function(request, response){
  
  //accept_history = request.body.User;
  //var user = request.body.User;
- var user = "Yu Zheng";
+ var user = "iris";
  var buyList = request.body.Buy;
  
     console.log(user);
