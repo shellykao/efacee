@@ -160,15 +160,15 @@ app.post('/history',function(request, response){
 app.post('/buyhistory', function(request, response){
  
  //accept_history = request.body.User;
- //var user = request.body.User;
- var user = "iris";
+ var user = request.body.User;
+// var user = "iris";
  var buyList = request.body.Buy;
  
     console.log(user);
     console.log(buyList);
 
  
- var collection = myDB.collection('buy_history');
+ var collection = myDB.collection('user_account');
  
  collection.find({user:user}).toArray(function(err, docs) {
   if (err) {
